@@ -1,8 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     colors: {
+      transparent: "transparent",
       gray: {
         100: "#F4F4F4",
         200: "#E9E9E9",
@@ -13,7 +15,9 @@ module.exports = {
         700: "#050505",
       },
       primary: "#A445ED",
-      error: "#FF5252",
+      secondary: "#FF5252",
+      white: "#FFFFFF",
+      black: "#000000",
     },
     fontFamily: {
       sans: "Inter, sans-serif",
