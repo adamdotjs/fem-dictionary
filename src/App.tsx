@@ -38,7 +38,8 @@ function App() {
         darkTheme && "dark",
         font === "sans" && "font-sans",
         font === "serif" && "font-serif",
-        font === "mono" && "font-mono"
+        font === "mono" && "font-mono",
+        "mx-auto max-w-[736px] text-lg"
       )}
     >
       <header className="flex items-center justify-between p-8">
@@ -70,7 +71,7 @@ function App() {
       </header>
 
       <main>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="mt-4 mb-12">
           <label htmlFor="query">
             <input
               type="text"
@@ -78,8 +79,10 @@ function App() {
               value={query}
               className="text-inherit rounded-lg bg-gray-100 px-3 py-2 font-medium"
             />
-            <button>Search</button>
           </label>
+          <button>
+            <img src="/icon-search.svg" />
+          </button>
         </form>
 
         {error && (
@@ -94,45 +97,51 @@ function App() {
 
         {word && (
           <>
-            <h1 className="text-5xl font-bold dark:text-primary">
-              {word.word}
-            </h1>
-            <span>{word.phonetic}</span>
+            <h1 className="text-6xl font-bold">{word.word}</h1>
+            <p className="mt-4 text-2xl text-primary">{word.phonetic}</p>
             {word.meanings?.map((meaning) => (
               <div key={meaning.partOfSpeech}>
-                <h2>{meaning.partOfSpeech}</h2>
-                <h3>Meaning</h3>
-                <ul>
+                <h2 className="relative my-10 text-2xl font-bold italic after:absolute after:top-1/2 after:ml-6 after:h-[1px] after:w-full after:bg-gray-200">
+                  {meaning.partOfSpeech}
+                </h2>
+                <h3 className="text-xl text-gray-300">Meaning</h3>
+                <ul className="mt-6 ml-6 list-disc marker:text-primary">
                   {meaning.definitions.map(({ definition, example }) => (
-                    <li key={definition}>
+                    <li key={definition} className="mt-4 pl-5">
                       <p>{definition}</p>
-                      <p>{example}</p>
+                      {example && (
+                        <p className="mt-2 text-gray-300">"{example}"</p>
+                      )}
                     </li>
                   ))}
                 </ul>
                 {meaning.synonyms.length > 0 && (
-                  <>
-                    <h3>Synonyms</h3>
-                    <ul>
+                  <div className="mt-16 flex gap-6">
+                    <h3 className="text-xl text-gray-300">Synonyms</h3>
+                    <ul className="text-xl font-bold text-primary">
                       {meaning.synonyms.map((synonym) => (
                         <li key={synonym}>{synonym}</li>
                       ))}
                     </ul>
-                  </>
+                  </div>
                 )}
                 {meaning.antonyms.length > 0 && (
-                  <>
-                    <h3>Antonyms</h3>
-                    <ul>
+                  <div className="mt-16 flex gap-6">
+                    <h3 className="text-xl text-gray-300">Antonyms</h3>
+                    <ul className="text-xl font-bold text-primary">
                       {meaning.antonyms.map((antonym) => (
                         <li key={antonym}>{antonym}</li>
                       ))}
                     </ul>
-                  </>
+                  </div>
                 )}
-                <div>
-                  <p>Source</p>
-                  <a href={word.sourceUrls[0]} target="blank">
+                <div className="mt-10 flex gap-6 border-t border-gray-200 pt-5 text-sm">
+                  <p className="text-gray-300 underline">Source</p>
+                  <a
+                    href={word.sourceUrls[0]}
+                    target="blank"
+                    className="underline"
+                  >
                     {word.sourceUrls[0]}
                   </a>
                 </div>
