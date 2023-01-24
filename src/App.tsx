@@ -71,16 +71,14 @@ function App() {
       </header>
 
       <main>
-        <form onSubmit={handleSubmit} className="mt-4 mb-12">
-          <label htmlFor="query">
-            <input
-              type="text"
-              onChange={(e) => setQuery(e.target.value)}
-              value={query}
-              className="text-inherit rounded-lg bg-gray-100 px-3 py-2 font-medium"
-            />
-          </label>
-          <button>
+        <form onSubmit={handleSubmit} className="relative mt-4 mb-12 w-full">
+          <input
+            type="text"
+            onChange={(e) => setQuery(e.target.value)}
+            value={query}
+            className="text-inherit w-full rounded-2xl bg-gray-100 px-6 py-5 font-bold"
+          />
+          <button className="absolute top-1/2 right-5 -translate-y-1/2">
             <img src="/icon-search.svg" />
           </button>
         </form>
