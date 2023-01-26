@@ -42,31 +42,34 @@ function App() {
         "mx-auto max-w-[736px] text-lg"
       )}
     >
-      <header className="flex items-center justify-between p-8">
+      <header className="flex items-center justify-between py-8">
         <img src="/logo.svg" alt="FrontEndMentor Dictionary" />
-        <div className="flex">
-          <select onChange={(e) => setFont(e.target.value)}>
+        <div className="flex items-center">
+          <select
+            onChange={(e) => setFont(e.target.value)}
+            className="bg-transparent px-2 font-bold"
+          >
             <option value="sans-serif">Sans Serif</option>
             <option value="serif">Serif</option>
             <option value="mono">Mono</option>
           </select>
           <div className="mx-4 h-full w-4 bg-gray-700"></div>
-          <div>
+          <div className="flex items-center gap-5">
             <Switch
               onChange={() => setDarkTheme(!darkTheme)}
               className={`${
-                darkTheme ? "bg-primary" : "bg-gray-200"
-              } relative inline-flex h-6 w-11 items-center rounded-full`}
+                darkTheme ? "bg-primary" : "bg-gray-300"
+              } relative inline-flex h-5 w-11 items-center rounded-full`}
             >
               <span className="sr-only">Enable notifications</span>
               <span
                 className={`${
                   darkTheme ? "translate-x-6" : "translate-x-1"
-                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                } inline-block h-[14px] w-[14px] transform rounded-full bg-white transition`}
               />
             </Switch>
+            <img src="/icon-moon.svg" alt="dark mode" className="h-5 w-5" />
           </div>
-          <img src="/icon-moon.svg" alt="dark mode" />
         </div>
       </header>
 
