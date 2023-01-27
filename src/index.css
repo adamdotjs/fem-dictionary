@@ -41,6 +41,34 @@
   font-style: italic;
 }
 
+:root {
+  --gray100: #f4f4f4;
+  --gray200: #e9e9e9;
+  --gray300: #757575;
+  --gray400: #3a3a3a;
+  --gray500: #2d2d2d;
+  --gray600: #1f1f1f;
+  --gray700: #050505;
+  --primary: #a445ed;
+  --secondary: #ff5252;
+  --white: #ffffff;
+  --black: #000000;
+}
+
+.dark {
+  --gray700: #f4f4f4;
+  --gray600: #e9e9e9;
+  --gray500: #757575;
+  --gray400: #3a3a3a;
+  --gray300: #2d2d2d;
+  --gray200: #1f1f1f;
+  --gray100: #050505;
+  --primary: #a445ed;
+  --secondary: #ff5252;
+  --white: #ffffff;
+  --black: #000000;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
