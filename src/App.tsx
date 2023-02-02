@@ -1,15 +1,15 @@
-import { Switch } from "@headlessui/react";
+import { Listbox, Switch, Transition } from "@headlessui/react";
 import clsx from "clsx";
-import { ChangeEvent, useLayoutEffect, useState } from "react";
+import { Fragment, useLayoutEffect, useState } from "react";
 
 function App() {
   const [query, setQuery] = useState("");
   const [word, setWord] = useState(null);
   const [error, setError] = useState(null);
+  const [font, setFont] = useState("Sans Serif");
   const [darkTheme, setDarkTheme] = useState(
     () => window.matchMedia("(prefers-color-scheme: dark)").matches
   );
-  const [font, setFont] = useState("sans");
 
   useLayoutEffect(() => {
     if (darkTheme) {
@@ -28,39 +28,66 @@ function App() {
       if (!response.ok) {
         const error = await response.json();
         setError(error);
+        setWord(null);
       }
       const data = await response.json();
 
       // if the response contains multiple results (?), just return the first object.
       // We don't want to display or handle multiple results for the same word ATM.
       setWord(data[0]);
+      setError(null);
     } catch (error) {
       console.log(error);
     }
   }
 
   return (
-    <div className="h-full dark:bg-gray-700 dark:text-white">
+    <div className="min-h-full dark:bg-gray-700 dark:text-white">
       <div
         className={clsx(
-          font === "sans" && "font-sans",
-          font === "serif" && "font-serif",
-          font === "mono" && "font-mono",
-          "mx-auto max-w-[736px] text-lg"
+          font === "Sans Serif" && "font-sans",
+          font === "Serif" && "font-serif",
+          font === "Mono" && "font-mono",
+          "mx-auto max-w-[736px] pb-32 text-lg"
         )}
       >
-        {/* HEADER */}
-        <header className="flex items-center justify-between py-8">
+        <header className="flex items-center justify-between py-12">
           <img src="/logo.svg" alt="FrontEndMentor Dictionary" />
           <div className="flex items-center">
-            <select
-              onChange={(e) => setFont(e.target.value)}
-              className="bg-transparent px-2 font-bold"
-            >
-              <option value="sans-serif">Sans Serif</option>
-              <option value="serif">Serif</option>
-              <option value="mono">Mono</option>
-            </select>
+            <Listbox onChange={setFont} defaultValue="Sans Serif" name="font">
+              <div className="relative font-bold">
+                <Listbox.Button className=" px-2">
+                  {({ value }) => value}
+                </Listbox.Button>
+                <Transition
+                  as={Fragment}
+                  leave="transition ease-in duration-100"
+                  leaveFrom="opacity-100"
+                  leaveTo="opacity-0"
+                >
+                  <Listbox.Options className="absolute right-0 z-50 mt-4 flex w-max flex-col gap-3 rounded-2xl bg-white p-6 shadow-[0px_0px_20px_2px] shadow-gray-200 dark:bg-gray-600 dark:shadow-primary">
+                    <Listbox.Option
+                      value="Sans Serif"
+                      className="cursor-pointer font-sans hover:text-primary"
+                    >
+                      Sans Serif
+                    </Listbox.Option>
+                    <Listbox.Option
+                      value="Serif"
+                      className="cursor-pointer font-serif hover:text-primary"
+                    >
+                      Serif
+                    </Listbox.Option>
+                    <Listbox.Option
+                      value="Mono"
+                      className="cursor-pointer font-mono hover:text-primary"
+                    >
+                      Mono
+                    </Listbox.Option>
+                  </Listbox.Options>
+                </Transition>
+              </div>
+            </Listbox>
             <div className="mx-4 h-full w-4 bg-gray-700"></div>
             <div className="flex items-center gap-5">
               <Switch
@@ -69,7 +96,7 @@ function App() {
                   darkTheme ? "bg-primary" : "bg-gray-300"
                 } relative inline-flex h-5 w-11 items-center rounded-full`}
               >
-                <span className="sr-only">Enable notifications</span>
+                <span className="sr-only">Toggle Theme</span>
                 <span
                   className={`${
                     darkTheme ? "translate-x-6" : "translate-x-1"
@@ -101,7 +128,7 @@ function App() {
 
         {/* MAIN CONTENT */}
         <main>
-          <form onSubmit={handleSubmit} className="relative mt-4 mb-12 w-full">
+          <form onSubmit={handleSubmit} className="relative mb-12 w-full">
             <input
               type="text"
               onChange={(e) => setQuery(e.target.value)}
@@ -170,9 +197,25 @@ function App() {
                 <a
                   href={word.sourceUrls[0]}
                   target="blank"
-                  className="underline"
+                  className="flex items-center gap-2 underline"
                 >
                   {word.sourceUrls[0]}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 14 14"
+                  >
+                    `
+                    <path
+                      fill="none"
+                      stroke="#757575"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                      d="M6.09 3.545H2.456A1.455 1.455 0 0 0 1 5v6.545A1.455 1.455 0 0 0 2.455 13H9a1.455 1.455 0 0 0 1.455-1.455V7.91m-5.091.727 7.272-7.272m0 0H9m3.636 0V5"
+                    />
+                  </svg>
                 </a>
               </div>
             </>
