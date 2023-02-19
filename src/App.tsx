@@ -19,7 +19,7 @@ function App() {
     }
   }, [darkTheme]);
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     try {
       const response = await fetch(
@@ -41,8 +41,15 @@ function App() {
     }
   }
 
+  // not every phonetic includes audio, so we need to find and return the first one that does.
+  // this could be improved further to ensure it matches the displayed phonetic spelling or
+  // use the user locale to return the correct language pronunciation, i.e. GB vs US English.
+  const audioSrc =
+    word?.phonetics?.find((src) => src.audio !== "")?.audio ?? null;
+  const audio = new Audio(audioSrc);
+
   return (
-    <div className="min-h-full dark:bg-gray-700 dark:text-white">
+    <div className="min-h-full p-6 dark:bg-gray-700 dark:text-white">
       <div
         className={clsx(
           font === "Sans Serif" && "font-sans",
@@ -115,9 +122,9 @@ function App() {
                   <path
                     fill="none"
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
                     d="M1 10.449a10.544 10.544 0 0 0 19.993 4.686C11.544 15.135 6.858 10.448 6.858 1A10.545 10.545 0 0 0 1 10.449Z"
                   />
                 </svg>
@@ -154,12 +161,39 @@ function App() {
 
           {word && (
             <>
-              <h1 className="text-6xl font-bold">{word.word}</h1>
-              <p className="mt-4 text-2xl text-primary">{word.phonetic}</p>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-6xl font-bold">{word.word}</h1>
+                  <p className="mt-4 text-2xl text-primary">{word.phonetic}</p>
+                </div>
+                {audioSrc && (
+                  <button onClick={() => audio.play()}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="75"
+                      height="75"
+                      viewBox="0 0 75 75"
+                      className="group fill-primary transition-colors hover:fill-white"
+                    >
+                      <g>
+                        <circle
+                          cx="37.5"
+                          cy="37.5"
+                          r="37.5"
+                          className="fill-primary/25 transition-colors group-hover:fill-primary"
+                        />
+                        <path d="M29 27v21l21-10.5z" />
+                      </g>
+                    </svg>
+                    <span className="sr-only">play audio</span>
+                  </button>
+                )}
+              </div>
               {word.meanings?.map((meaning) => (
                 <div key={meaning.partOfSpeech}>
-                  <h2 className="relative my-10 text-2xl font-bold italic after:absolute after:top-1/2 after:ml-6 after:h-[1px] after:w-full after:bg-gray-200 after:dark:bg-gray-400">
-                    {meaning.partOfSpeech}
+                  <h2 className="my-10 flex items-center gap-6 text-2xl font-bold italic">
+                    <span>{meaning.partOfSpeech}</span>
+                    <div className="top-1/2 h-[1px] w-full bg-gray-200 dark:bg-gray-400"></div>
                   </h2>
                   <h3 className="text-xl text-gray-300">Meaning</h3>
                   <ul className="mt-6 ml-6 list-disc marker:text-primary">
