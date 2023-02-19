@@ -133,7 +133,9 @@ function App() {
               type="text"
               onChange={(e) => setQuery(e.target.value)}
               value={query}
-              className="text-inherit w-full rounded-2xl bg-gray-100 px-6 py-5 font-bold dark:bg-gray-600 dark:text-white"
+              className="text-inherit w-full rounded-2xl border border-transparent bg-gray-100 px-6 py-5 font-bold outline-none placeholder:text-black/25 invalid:required:border-secondary focus:border-primary dark:bg-gray-600 dark:text-white dark:placeholder:text-white/25"
+              placeholder="Search for any word..."
+              required
             />
             <button className="absolute top-1/2 right-5 -translate-y-1/2">
               <img src="/icon-search.svg" />
@@ -141,11 +143,11 @@ function App() {
           </form>
 
           {error && (
-            <div>
-              <div>😕</div>
-              <p>{error.title}</p>
-              <p>
-                {error.message}. {error.resolution}
+            <div className="mt-36 text-center">
+              <p className="text-[64px]">😕</p>
+              <p className="mt-16 text-xl font-bold">{error.title}</p>
+              <p className="mt-6 text-gray-300">
+                {error.message} {error.resolution}
               </p>
             </div>
           )}
