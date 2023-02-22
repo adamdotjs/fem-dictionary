@@ -31,6 +31,7 @@ function App() {
         setWord(null);
       }
       const data = await response.json();
+      setQuery("");
 
       // if the response contains multiple results (?), just return the first object.
       // We don't want to display or handle multiple results for the same word ATM.
@@ -136,14 +137,21 @@ function App() {
         {/* MAIN CONTENT */}
         <main>
           <form onSubmit={handleSubmit} className="relative mb-12 w-full">
-            <input
-              type="text"
-              onChange={(e) => setQuery(e.target.value)}
-              value={query}
-              className="text-inherit w-full rounded-2xl border border-transparent bg-gray-100 px-6 py-5 font-bold outline-none placeholder:text-black/25 invalid:required:border-secondary focus:border-primary dark:bg-gray-600 dark:text-white dark:placeholder:text-white/25"
-              placeholder="Search for any word..."
-              required
-            />
+            <label>
+              <span className="sr-only">Search for any word</span>
+              <input
+                type="text"
+                onChange={(e) => setQuery(e.target.value)}
+                value={query}
+                className="text-inherit peer w-full rounded-2xl border border-transparent bg-gray-100 px-6 py-5 font-bold outline-none placeholder:text-black/25 focus:border-primary dark:bg-gray-600 dark:text-white dark:placeholder:text-white/25 [&:not(:focus):not(:placeholder-shown):invalid]:border-secondary"
+                placeholder="Search for any word..."
+                minLength={5}
+                required
+              />
+              <span className="absolute -bottom-8 left-0 hidden text-secondary peer-[&:not(:focus):not(:placeholder-shown):invalid]:inline">
+                Whoops, can't be empty...
+              </span>
+            </label>
             <button className="absolute top-1/2 right-5 -translate-y-1/2">
               <img src="/icon-search.svg" />
             </button>
