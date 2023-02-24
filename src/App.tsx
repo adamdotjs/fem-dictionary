@@ -2,14 +2,18 @@ import { Listbox, Switch, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { Fragment, useLayoutEffect, useState } from "react";
 
+type Word = {};
+
 function App() {
-  const [query, setQuery] = useState("");
-  const [word, setWord] = useState(null);
-  const [error, setError] = useState(null);
-  const [font, setFont] = useState("Sans Serif");
-  const [darkTheme, setDarkTheme] = useState(
+  const [query, setQuery] = useState<string>("");
+  const [word, setWord] = useState<Response | null>(null);
+  const [error, setError] = useState<Response | null>(null);
+  const [font, setFont] = useState<string>("Sans Serif");
+  const [darkTheme, setDarkTheme] = useState<boolean>(
     () => window.matchMedia("(prefers-color-scheme: dark)").matches
   );
+
+  console.log(word);
 
   useLayoutEffect(() => {
     if (darkTheme) {
@@ -19,7 +23,7 @@ function App() {
     }
   }, [darkTheme]);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
       const response = await fetch(
@@ -32,7 +36,6 @@ function App() {
       }
       const data = await response.json();
       setQuery("");
-
       // if the response contains multiple results (?), just return the first object.
       // We don't want to display or handle multiple results for the same word ATM.
       setWord(data[0]);
@@ -46,7 +49,7 @@ function App() {
   // this could be improved further to ensure it matches the displayed phonetic spelling or
   // use the user locale to return the correct language pronunciation, i.e. GB vs US English.
   const audioSrc =
-    word?.phonetics?.find((src) => src.audio !== "")?.audio ?? null;
+    word?.phonetics.find((src) => src.audio !== "")?.audio ?? null;
   const audio = new Audio(audioSrc);
 
   return (
